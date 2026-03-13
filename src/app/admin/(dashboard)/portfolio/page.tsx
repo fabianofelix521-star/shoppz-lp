@@ -4,7 +4,7 @@ import { useEffect, useState, useCallback } from "react";
 import { SiteContent } from "@/lib/types";
 import AdminCard from "@/components/admin/AdminCard";
 import Toast from "@/components/admin/Toast";
-import { Plus, Trash2, ChevronUp, ChevronDown, Loader2 } from "lucide-react";
+import { Plus, Trash2, ChevronUp, ChevronDown, Loader2, Upload, ImageIcon } from "lucide-react";
 
 export default function PortfolioEditor() {
   const [content, setContent] = useState<SiteContent | null>(null);
@@ -18,6 +18,7 @@ export default function PortfolioEditor() {
     message: "",
     type: "success",
   });
+  const [uploading, setUploading] = useState<number | null>(null);
 
   useEffect(() => {
     fetch("/api/content")
@@ -93,6 +94,25 @@ export default function PortfolioEditor() {
         stores: portfolio.stores.filter((_, idx) => idx !== i),
       },
     });
+
+  const uploadImage = async (i: number, file: File) => {
+    setUploading(i);
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+      const res = await fetch("/api/upload", { method: "POST", body: formData });
+      const data = await res.json();
+      if (res.ok && data.url) {
+        updateStore(i, "image", data.url);
+        setToast({ visible: true, message: "Imagem enviada!", type: "success" });
+      } else {
+        setToast({ visible: true, message: data.error || "Erro no upload", type: "error" });
+      }
+    } catch {
+      setToast({ visible: true, message: "Erro ao enviar imagem", type: "error" });
+    }
+    setUploading(null);
+  };
 
   const moveStore = (i: number, dir: -1 | 1) => {
     const stores = [...portfolio.stores];
@@ -218,15 +238,30 @@ export default function PortfolioEditor() {
                     className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-white focus:border-gold focus:outline-none"
                   />
                 </div>
-                <div>
+                <div className="sm:col-span-2">
                   <label className="mb-2 block text-sm font-medium text-white/70">
-                    URL da Imagem
+                    Imagem da Loja
                   </label>
-                  <input
-                    value={store.image}
-                    onChange={(e) => updateStore(i, "image", e.target.value)}
-                    className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-white focus:border-gold focus:outline-none"
-                  />
+                  <label className="flex cursor-pointer items-center gap-3 rounded-xl border border-dashed border-white/20 bg-white/5 px-4 py-3 transition-colors hover:border-gold hover:bg-white/10">
+                    {uploading === i ? (
+                      <Loader2 className="h-5 w-5 animate-spin text-gold" />
+                    ) : (
+                      <Upload className="h-5 w-5 text-white/50" />
+                    )}
+                    <span className="text-sm text-white/60">
+                      {uploading === i ? "Enviando..." : "Clique para enviar imagem (JPG, PNG, WebP — máx 5MB)"}
+                    </span>
+                    <input
+                      type="file"
+                      accept="image/jpeg,image/png,image/webp,image/gif"
+                      className="hidden"
+                      onChange={(e) => {
+                        const file = e.target.files?.[0];
+                        if (file) uploadImage(i, file);
+                        e.target.value = "";
+                      }}
+                    />
+                  </label>
                 </div>
                 <div>
                   <label className="mb-2 block text-sm font-medium text-white/70">
@@ -252,12 +287,24 @@ export default function PortfolioEditor() {
                 </div>
               </div>
               {store.image && (
-                <div className="mt-3">
+                <div className="mt-3 flex items-center gap-3">
                   <img
                     src={store.image}
                     alt={store.name}
-                    className="max-w-[200px] rounded-xl border border-white/10"
+                    className="h-24 w-24 rounded-xl border border-white/10 object-cover"
                   />
+                  <div className="flex flex-col gap-1">
+                    <span className="flex items-center gap-1 text-xs text-green-400">
+                      <ImageIcon className="h-3 w-3" /> Imagem carregada
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => updateStore(i, "image", "")}
+                      className="text-xs text-red-400 hover:text-red-300"
+                    >
+                      Remover imagem
+                    </button>
+                  </div>
                 </div>
               )}
             </div>
