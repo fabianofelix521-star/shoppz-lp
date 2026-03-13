@@ -2,11 +2,13 @@
 
 import { motion } from "framer-motion"
 import { MessageCircle } from "lucide-react"
+import { SiteContent } from "@/lib/types"
 
-const WHATSAPP_URL =
-  "https://wa.me/5511999999999?text=Olá! Quero criar minha loja online premium com a Shoppz Digital."
+interface CTAFinalProps {
+  data: SiteContent["ctaFinal"]
+}
 
-export default function CTAFinal() {
+export default function CTAFinal({ data }: CTAFinalProps) {
   return (
     <section id="contact" className="py-24 relative overflow-hidden">
       {/* Glow orb */}
@@ -20,22 +22,21 @@ export default function CTAFinal() {
           className="glass rounded-3xl p-12 md:p-16 text-center"
         >
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6">
-            Pronto Para Transformar
+            {data.titleLine1}
             <br />
-            <span className="text-gold-gradient">Seu Negócio?</span>
+            <span className="text-gold-gradient">{data.titleLine2}</span>
           </h2>
           <p className="text-white/50 max-w-xl mx-auto mb-10 text-lg">
-            Entre em contato agora e descubra como podemos criar a loja online
-            perfeita para você.
+            {data.subtitle}
           </p>
           <a
-            href={WHATSAPP_URL}
+            href={data.whatsappUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-3 px-10 py-5 rounded-full bg-gold-gradient text-black font-bold text-lg hover:shadow-gold-lg transition-all duration-300 hover:scale-105"
           >
             <MessageCircle size={24} />
-            Falar com um Especialista Agora
+            {data.buttonText}
           </a>
         </motion.div>
       </div>
