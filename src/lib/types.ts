@@ -90,6 +90,8 @@ export interface SiteContent {
 }
 
 export interface AdminUser {
-  username: string;
-  password: string;
+  id: string;
+  email: string;
+  role: "admin" | "super_admin";
+  created_at: string;
 }

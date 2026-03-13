@@ -1,37 +1,74 @@
 import { NextRequest, NextResponse } from "next/server";
-import { cookies } from "next/headers";
-
-const ADMIN_USER = "fabianoshoppz";
-const ADMIN_PASS = "Sppz543652B";
-const AUTH_TOKEN = "shoppz_admin_authenticated_2024_secure";
+import { createClient } from "@/lib/supabase/server";
 
 export async function POST(req: NextRequest) {
-  const { username, password } = await req.json();
+  const { email, password } = await req.json();
 
-  if (username === ADMIN_USER && password === ADMIN_PASS) {
-    const cookieStore = await cookies();
-    cookieStore.set("admin_token", AUTH_TOKEN, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
-      path: "/",
-      maxAge: 60 * 60 * 24,
-    });
-    return NextResponse.json({ success: true });
+  if (!email || !password) {
+    return NextResponse.json(
+      { error: "E-mail e senha são obrigatórios" },
+      { status: 400 },
+    );
   }
 
-  return NextResponse.json({ error: "Credenciais inválidas" }, { status: 401 });
+  const supabase = await createClient();
+
+  const { data, error } = await supabase.auth.signInWithPassword({
+    email,
+    password,
+  });
+
+  if (error) {
+    return NextResponse.json(
+      { error: "Credenciais inválidas" },
+      { status: 401 },
+    );
+  }
+
+  // Check if user is in admin_users whitelist
+  const { data: adminUser } = await supabase
+    .from("admin_users")
+    .select("id, role")
+    .eq("id", data.user.id)
+    .single();
+
+  if (!adminUser) {
+    await supabase.auth.signOut();
+    return NextResponse.json(
+      { error: "Acesso negado. Usuário não é administrador." },
+      { status: 403 },
+    );
+  }
+
+  return NextResponse.json({ success: true, role: adminUser.role });
 }
 
 export async function GET() {
-  const cookieStore = await cookies();
-  const token = cookieStore.get("admin_token");
-  const authenticated = token?.value === AUTH_TOKEN;
-  return NextResponse.json({ authenticated });
+  const supabase = await createClient();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    return NextResponse.json({ authenticated: false });
+  }
+
+  const { data: adminUser } = await supabase
+    .from("admin_users")
+    .select("id, role")
+    .eq("id", user.id)
+    .single();
+
+  return NextResponse.json({
+    authenticated: !!adminUser,
+    role: adminUser?.role ?? null,
+    email: user.email,
+  });
 }
 
 export async function DELETE() {
-  const cookieStore = await cookies();
-  cookieStore.delete("admin_token");
+  const supabase = await createClient();
+  await supabase.auth.signOut();
   return NextResponse.json({ success: true });
 }

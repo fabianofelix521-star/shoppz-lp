@@ -1,22 +1,55 @@
-import { promises as fs } from "fs";
-import path from "path";
 import { SiteContent } from "./types";
 import { defaultContent } from "./data";
-
-const DATA_FILE = path.join(process.cwd(), "data", "content.json");
+import { createClient } from "./supabase/server";
 
 export async function getContent(): Promise<SiteContent> {
   try {
-    const raw = await fs.readFile(DATA_FILE, "utf-8");
-    return JSON.parse(raw) as SiteContent;
+    const supabase = await createClient();
+    const { data, error } = await supabase
+      .from("site_content")
+      .select("content")
+      .limit(1)
+      .single();
+
+    if (error || !data) {
+      return defaultContent;
+    }
+
+    return data.content as SiteContent;
   } catch {
-    await saveContent(defaultContent);
     return defaultContent;
   }
 }
 
-export async function saveContent(content: SiteContent): Promise<void> {
-  const dir = path.dirname(DATA_FILE);
-  await fs.mkdir(dir, { recursive: true });
-  await fs.writeFile(DATA_FILE, JSON.stringify(content, null, 2), "utf-8");
+export async function saveContent(
+  content: SiteContent,
+  userId?: string,
+): Promise<void> {
+  const supabase = await createClient();
+
+  // Check if a row already exists
+  const { data: existing } = await supabase
+    .from("site_content")
+    .select("id")
+    .limit(1)
+    .single();
+
+  if (existing) {
+    const { error } = await supabase
+      .from("site_content")
+      .update({
+        content,
+        updated_by: userId ?? null,
+      })
+      .eq("id", existing.id);
+
+    if (error) throw new Error(error.message);
+  } else {
+    const { error } = await supabase.from("site_content").insert({
+      content,
+      updated_by: userId ?? null,
+    });
+
+    if (error) throw new Error(error.message);
+  }
 }

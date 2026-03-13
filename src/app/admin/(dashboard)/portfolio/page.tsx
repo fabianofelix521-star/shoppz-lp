@@ -4,7 +4,15 @@ import { useEffect, useState, useCallback } from "react";
 import { SiteContent } from "@/lib/types";
 import AdminCard from "@/components/admin/AdminCard";
 import Toast from "@/components/admin/Toast";
-import { Plus, Trash2, ChevronUp, ChevronDown, Loader2, Upload, ImageIcon } from "lucide-react";
+import {
+  Plus,
+  Trash2,
+  ChevronUp,
+  ChevronDown,
+  Loader2,
+  Upload,
+  ImageIcon,
+} from "lucide-react";
 
 export default function PortfolioEditor() {
   const [content, setContent] = useState<SiteContent | null>(null);
@@ -100,16 +108,31 @@ export default function PortfolioEditor() {
     try {
       const formData = new FormData();
       formData.append("file", file);
-      const res = await fetch("/api/upload", { method: "POST", body: formData });
+      const res = await fetch("/api/upload", {
+        method: "POST",
+        body: formData,
+      });
       const data = await res.json();
       if (res.ok && data.url) {
         updateStore(i, "image", data.url);
-        setToast({ visible: true, message: "Imagem enviada!", type: "success" });
+        setToast({
+          visible: true,
+          message: "Imagem enviada!",
+          type: "success",
+        });
       } else {
-        setToast({ visible: true, message: data.error || "Erro no upload", type: "error" });
+        setToast({
+          visible: true,
+          message: data.error || "Erro no upload",
+          type: "error",
+        });
       }
     } catch {
-      setToast({ visible: true, message: "Erro ao enviar imagem", type: "error" });
+      setToast({
+        visible: true,
+        message: "Erro ao enviar imagem",
+        type: "error",
+      });
     }
     setUploading(null);
   };
@@ -249,7 +272,9 @@ export default function PortfolioEditor() {
                       <Upload className="h-5 w-5 text-white/50" />
                     )}
                     <span className="text-sm text-white/60">
-                      {uploading === i ? "Enviando..." : "Clique para enviar imagem (JPG, PNG, WebP — máx 5MB)"}
+                      {uploading === i
+                        ? "Enviando..."
+                        : "Clique para enviar imagem (JPG, PNG, WebP — máx 5MB)"}
                     </span>
                     <input
                       type="file"

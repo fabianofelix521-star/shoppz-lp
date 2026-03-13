@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import AdminSidebar from "@/components/admin/AdminSidebar";
 import AdminHeader from "@/components/admin/AdminHeader";
 import { Loader2 } from "lucide-react";
+import { createClient } from "@/lib/supabase/client";
 
 export default function AdminLayout({
   children,
@@ -16,13 +17,32 @@ export default function AdminLayout({
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   useEffect(() => {
-    fetch("/api/auth")
-      .then((r) => r.json())
-      .then((data) => {
-        if (!data.authenticated) router.push("/admin/login");
-        else setChecking(false);
-      })
-      .catch(() => router.push("/admin/login"));
+    const checkAuth = async () => {
+      const supabase = createClient();
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+
+      if (!user) {
+        router.push("/admin/login");
+        return;
+      }
+
+      const { data: adminUser } = await supabase
+        .from("admin_users")
+        .select("id")
+        .eq("id", user.id)
+        .single();
+
+      if (!adminUser) {
+        router.push("/admin/login");
+        return;
+      }
+
+      setChecking(false);
+    };
+
+    checkAuth();
   }, [router]);
 
   if (checking) {

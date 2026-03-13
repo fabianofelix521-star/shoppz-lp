@@ -6,7 +6,7 @@ import { Eye, EyeOff, Loader2 } from "lucide-react";
 
 export default function AdminLoginPage() {
   const router = useRouter();
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
@@ -21,13 +21,15 @@ export default function AdminLoginPage() {
       const res = await fetch("/api/auth", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password }),
+        body: JSON.stringify({ email, password }),
       });
+
+      const data = await res.json();
 
       if (res.ok) {
         router.push("/admin");
       } else {
-        setError("Credenciais inválidas");
+        setError(data.error || "Credenciais inválidas");
       }
     } catch {
       setError("Erro de conexão");
@@ -60,16 +62,16 @@ export default function AdminLoginPage() {
             </div>
           )}
 
-          {/* Username */}
+          {/* Email */}
           <div className="mb-4">
             <label className="mb-2 block text-sm font-medium text-white/70">
-              Usuário
+              E-mail
             </label>
             <input
-              type="text"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              placeholder="Seu usuário"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="seu@email.com"
               className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-white placeholder-white/30 transition-colors focus:border-gold focus:outline-none"
               required
             />

@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { ExternalLink, LogOut, Menu } from "lucide-react";
+import { createClient } from "@/lib/supabase/client";
 
 interface AdminHeaderProps {
   onMenuToggle: () => void;
@@ -11,7 +12,8 @@ export default function AdminHeader({ onMenuToggle }: AdminHeaderProps) {
   const router = useRouter();
 
   const handleLogout = async () => {
-    await fetch("/api/auth", { method: "DELETE" });
+    const supabase = createClient();
+    await supabase.auth.signOut();
     router.push("/admin/login");
   };
 

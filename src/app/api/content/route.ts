@@ -1,13 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { cookies } from "next/headers";
 import { getContent, saveContent } from "@/lib/storage";
-
-const AUTH_TOKEN = "shoppz_admin_authenticated_2024_secure";
-
-async function isAuthenticated(): Promise<boolean> {
-  const cookieStore = await cookies();
-  return cookieStore.get("admin_token")?.value === AUTH_TOKEN;
-}
+import { createClient } from "@/lib/supabase/server";
 
 export async function GET() {
   const content = await getContent();
@@ -15,11 +8,28 @@ export async function GET() {
 }
 
 export async function PUT(req: NextRequest) {
-  if (!(await isAuthenticated())) {
+  const supabase = await createClient();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
     return NextResponse.json({ error: "Não autorizado" }, { status: 401 });
   }
 
+  // Verify admin
+  const { data: adminUser } = await supabase
+    .from("admin_users")
+    .select("id")
+    .eq("id", user.id)
+    .single();
+
+  if (!adminUser) {
+    return NextResponse.json({ error: "Não autorizado" }, { status: 403 });
+  }
+
   const content = await req.json();
-  await saveContent(content);
+  await saveContent(content, user.id);
   return NextResponse.json({ success: true });
 }
