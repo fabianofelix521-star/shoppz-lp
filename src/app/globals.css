@@ -1,11 +1,11 @@
 @import "tailwindcss";
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap");
 
 @config "../../tailwind.config.js";
 
 :root {
-  --gold: #D4AF37;
+  --gold: #d4af37;
   --gold-glow: rgba(212, 175, 55, 0.35);
 }
 
@@ -14,8 +14,8 @@ html {
 }
 
 body {
-  font-family: 'Inter', sans-serif;
-  background: #0A0A0A;
+  font-family: "Inter", sans-serif;
+  background: #0a0a0a;
   color: rgba(255, 255, 255, 0.9);
   -webkit-font-smoothing: antialiased;
 }
@@ -25,11 +25,11 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: #0A0A0A;
+  background: #0a0a0a;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #B8962E;
+  background: #b8962e;
   border-radius: 10px;
 }
 
@@ -48,7 +48,7 @@ body {
   }
 
   .text-gold-gradient {
-    background: linear-gradient(135deg, #E8C94A, #D4AF37, #B8962E);
+    background: linear-gradient(135deg, #e8c94a, #d4af37, #b8962e);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;

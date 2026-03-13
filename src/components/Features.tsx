@@ -1,99 +1,94 @@
-'use client'
+"use client"
 
-import { motion } from 'framer-motion'
-import {
-  Zap,
-  Smartphone,
-  Package,
-  BarChart3,
-  CreditCard,
-  Headphones,
-} from 'lucide-react'
+import { motion } from "framer-motion"
+import { Palette, Zap, Headphones, Search, Shield, Smartphone } from "lucide-react"
 
 const features = [
   {
+    icon: Palette,
+    title: "Design Exclusivo",
+    desc: "Layouts premium personalizados que refletem a identidade única da sua marca.",
+  },
+  {
     icon: Zap,
-    title: 'Checkout Ultrarrápido',
-    desc: 'Converta mais visitantes em clientes com um processo de compra simples e rápido.',
-  },
-  {
-    icon: Smartphone,
-    title: 'Design 100% Responsivo',
-    desc: 'Perfeito em qualquer dispositivo — celular, tablet ou desktop.',
-  },
-  {
-    icon: Package,
-    title: 'Gestão de Estoque',
-    desc: 'Controle seus produtos facilmente com alertas e relatórios automáticos.',
-  },
-  {
-    icon: BarChart3,
-    title: 'Analytics em Tempo Real',
-    desc: 'Dados que revelam oportunidades e ajudam você a crescer mais rápido.',
-  },
-  {
-    icon: CreditCard,
-    title: 'Pagamentos Integrados',
-    desc: 'Pix, cartão, boleto. Tudo em um lugar, com recebimento rápido.',
+    title: "Performance Máxima",
+    desc: "Sites ultra-rápidos otimizados para conversão e experiência do usuário.",
   },
   {
     icon: Headphones,
-    title: 'Suporte 24/7',
-    desc: 'Time especializado sempre disponível para resolver qualquer dúvida.',
+    title: "Suporte Dedicado",
+    desc: "Equipe especializada disponível para ajudar você a crescer.",
+  },
+  {
+    icon: Search,
+    title: "SEO Otimizado",
+    desc: "Configuração profissional para ranquear no Google e atrair clientes.",
+  },
+  {
+    icon: Shield,
+    title: "Segurança Total",
+    desc: "Certificado SSL, backups automáticos e proteção contra fraudes.",
+  },
+  {
+    icon: Smartphone,
+    title: "Mobile-First",
+    desc: "Perfeito em todos os dispositivos, do celular ao desktop.",
   },
 ]
 
-const container = {
-  hidden: {},
-  show: { transition: { staggerChildren: 0.1 } },
-}
-
-const item = {
-  hidden: { opacity: 0, y: 30 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.5 } },
-}
-
 export default function Features() {
   return (
-    <section id="recursos" className="py-24 lg:py-32">
+    <section id="features" className="py-24 relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="text-center mb-16"
-        >
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold mb-4">
-            Tudo que você precisa para{' '}
-            <span className="text-gold-gradient">vender online</span>
-          </h2>
-          <p className="text-white/40 text-lg max-w-2xl mx-auto">
-            Ferramentas poderosas para criar, gerenciar e escalar sua loja
-            digital.
-          </p>
-        </motion.div>
+        {/* Header */}
+        <div className="text-center mb-16">
+          <motion.span
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            className="text-gold text-xs font-semibold tracking-[0.3em] uppercase"
+          >
+            Por Que Escolher
+          </motion.span>
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="mt-4 text-3xl sm:text-4xl lg:text-5xl font-bold"
+          >
+            Tudo Que Sua Loja Precisa
+          </motion.h2>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.1 }}
+            className="mt-4 text-white/50 max-w-2xl mx-auto"
+          >
+            Tecnologia de ponta, design premium e suporte especializado para
+            impulsionar suas vendas online.
+          </motion.p>
+        </div>
 
-        <motion.div
-          variants={container}
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true }}
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
-        >
-          {features.map((f) => (
+        {/* Grid */}
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {features.map((f, i) => (
             <motion.div
               key={f.title}
-              variants={item}
-              className="group p-6 rounded-2xl glass glass-hover transition-all duration-300 cursor-default"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.1 }}
+              className="glass glass-hover rounded-2xl p-8 transition-all duration-500 group cursor-default"
             >
-              <div className="w-12 h-12 rounded-xl bg-navy-gradient flex items-center justify-center mb-5 group-hover:shadow-gold transition-shadow">
-                <f.icon className="w-6 h-6 text-gold" />
+              <div className="w-14 h-14 rounded-2xl bg-gold/10 flex items-center justify-center mb-6 group-hover:bg-gold/20 transition-colors">
+                <f.icon size={28} className="text-gold" />
               </div>
-              <h3 className="text-lg font-bold mb-2">{f.title}</h3>
-              <p className="text-sm text-white/50 leading-relaxed">{f.desc}</p>
+              <h3 className="text-xl font-bold mb-3">{f.title}</h3>
+              <p className="text-white/50 text-sm leading-relaxed">{f.desc}</p>
             </motion.div>
           ))}
-        </motion.div>
+        </div>
       </div>
     </section>
   )

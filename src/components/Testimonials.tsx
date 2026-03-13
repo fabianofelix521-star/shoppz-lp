@@ -1,107 +1,114 @@
-'use client'
+"use client"
 
-import { motion } from 'framer-motion'
-import { Star } from 'lucide-react'
+import { motion } from "framer-motion"
+import { Star, Quote } from "lucide-react"
 
-interface Testimonial {
-  quote: string
-  name: string
-  store: string
-  city: string
-  initials: string
-}
-
-const testimonials: Testimonial[] = [
+const testimonials = [
   {
-    quote: 'Triplicou minhas vendas em 3 meses! A plataforma é incrivelmente fácil de usar.',
-    name: 'Ana Silva',
-    store: 'Moda Luxo',
-    city: 'São Paulo',
-    initials: 'AS',
+    text: "A Shoppz Digital transformou completamente meu negócio. Em 3 meses aumentei minhas vendas em 280% e hoje faturamos mais de R$150K por mês.",
+    name: "Carolina Santos",
+    role: "Fundadora, Luxe Fashion",
+    avatar:
+      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&h=200&fit=crop&q=80",
   },
   {
-    quote: 'O suporte é incrível, resolvem tudo na hora. Nunca vi atendimento assim.',
-    name: 'Carlos Tech',
-    store: 'Tech Shop',
-    city: 'Rio de Janeiro',
-    initials: 'CT',
+    text: "Design impecável, performance incrível e suporte sempre disponível. Nossa conversão dobrou e o ticket médio aumentou 45%. Melhor investimento que fizemos!",
+    name: "Roberto Almeida",
+    role: "CEO, Tech Haven",
+    avatar:
+      "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=200&h=200&fit=crop&q=80",
   },
   {
-    quote: 'Melhor investimento que fiz para minha marca. Recomendo de olhos fechados.',
-    name: 'Julia Beauty',
-    store: 'Beauty Store',
-    city: 'Curitiba',
-    initials: 'JB',
+    text: "Profissionalismo do início ao fim. A loja ficou linda, as integrações funcionam perfeitamente e o retorno sobre investimento foi absurdo. Super recomendo!",
+    name: "Mariana Costa",
+    role: "Proprietária, Glow Beauty",
+    avatar:
+      "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=200&h=200&fit=crop&q=80",
   },
 ]
 
-const container = {
-  hidden: {},
-  show: { transition: { staggerChildren: 0.15 } },
-}
-
-const item = {
-  hidden: { opacity: 0, y: 30 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.5 } },
-}
-
 export default function Testimonials() {
   return (
-    <section className="py-24 lg:py-32 bg-bg-surface">
+    <section id="testimonials" className="py-24 relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="text-center mb-16"
-        >
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold mb-4">
-            O que nossos{' '}
-            <span className="text-gold-gradient">lojistas</span> dizem
-          </h2>
-        </motion.div>
+        {/* Header */}
+        <div className="text-center mb-16">
+          <motion.span
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            className="text-gold text-xs font-semibold tracking-[0.3em] uppercase"
+          >
+            Depoimentos
+          </motion.span>
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="mt-4 text-3xl sm:text-4xl lg:text-5xl font-bold"
+          >
+            Histórias de Sucesso
+          </motion.h2>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.1 }}
+            className="mt-4 text-white/50 max-w-2xl mx-auto"
+          >
+            Veja o que nossos clientes dizem sobre as lojas que criamos para eles.
+          </motion.p>
+        </div>
 
-        <motion.div
-          variants={container}
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true }}
-          className="grid grid-cols-1 md:grid-cols-3 gap-6"
-        >
-          {testimonials.map((t) => (
+        {/* Cards */}
+        <div className="grid md:grid-cols-3 gap-8">
+          {testimonials.map((t, i) => (
             <motion.div
               key={t.name}
-              variants={item}
-              className="p-6 rounded-2xl glass glass-hover transition-all duration-300"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.15 }}
+              className="glass rounded-2xl p-8 relative"
             >
+              {/* Quote icon */}
+              <Quote size={40} className="text-gold/20 mb-4" />
+
               {/* Stars */}
-              <div className="flex gap-1 mb-4">
-                {Array.from({ length: 5 }).map((_, i) => (
+              <div className="flex gap-1 mb-6">
+                {Array.from({ length: 5 }).map((_, j) => (
                   <Star
-                    key={i}
-                    className="w-4 h-4 fill-gold text-gold"
+                    key={j}
+                    size={16}
+                    className="text-gold fill-gold"
                   />
                 ))}
               </div>
 
-              <p className="text-white/70 leading-relaxed mb-6">
-                &ldquo;{t.quote}&rdquo;
+              {/* Text */}
+              <p className="text-white/70 leading-relaxed mb-8">
+                &ldquo;{t.text}&rdquo;
               </p>
 
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-navy-gradient flex items-center justify-center text-xs font-bold text-gold">
-                  {t.initials}
-                </div>
+              {/* Divider */}
+              <div className="h-px bg-white/10 mb-6" />
+
+              {/* Author */}
+              <div className="flex items-center gap-4">
+                <img
+                  src={t.avatar}
+                  alt={t.name}
+                  loading="lazy"
+                  className="w-12 h-12 rounded-full object-cover border-2 border-gold/30"
+                />
                 <div>
-                  <div className="text-sm font-semibold">{t.name}</div>
-                  <div className="text-xs text-white/40">
-                    {t.store} • {t.city}
-                  </div>
+                  <p className="font-semibold text-sm">{t.name}</p>
+                  <p className="text-xs text-white/40">{t.role}</p>
                 </div>
               </div>
             </motion.div>
           ))}
-        </motion.div>
+        </div>
       </div>
     </section>
   )
