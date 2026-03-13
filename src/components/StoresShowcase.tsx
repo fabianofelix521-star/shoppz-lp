@@ -1,10 +1,10 @@
-"use client"
+"use client";
 
-import { motion } from "framer-motion"
-import { SiteContent } from "@/lib/types"
+import { motion } from "framer-motion";
+import { SiteContent } from "@/lib/types";
 
 interface StoresShowcaseProps {
-  data: SiteContent["portfolio"]
+  data: SiteContent["portfolio"];
 }
 
 export default function StoresShowcase({ data }: StoresShowcaseProps) {
@@ -43,11 +43,15 @@ export default function StoresShowcase({ data }: StoresShowcaseProps) {
         {/* Grid */}
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {data.stores.map((store, i) => {
-            const hasLink = store.link && store.link !== "#"
-            const Wrapper = hasLink ? "a" : "div"
+            const hasLink = store.link && store.link !== "#";
+            const Wrapper = hasLink ? "a" : "div";
             const linkProps = hasLink
-              ? { href: store.link, target: "_blank" as const, rel: "noopener noreferrer" }
-              : {}
+              ? {
+                  href: store.link,
+                  target: "_blank" as const,
+                  rel: "noopener noreferrer",
+                }
+              : {};
 
             return (
               <motion.div
@@ -100,10 +104,10 @@ export default function StoresShowcase({ data }: StoresShowcaseProps) {
                   <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 border-2 border-gold/30 rounded-2xl pointer-events-none" />
                 </Wrapper>
               </motion.div>
-            )
+            );
           })}
         </div>
       </div>
     </section>
-  )
+  );
 }

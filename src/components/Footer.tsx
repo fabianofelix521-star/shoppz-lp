@@ -1,17 +1,26 @@
-"use client"
+"use client";
 
-import { Instagram, Facebook, Linkedin, Mail, Phone, MapPin } from "lucide-react"
-import { SiteContent } from "@/lib/types"
+import {
+  Instagram,
+  Facebook,
+  Linkedin,
+  Mail,
+  Phone,
+  MapPin,
+} from "lucide-react";
+import { SiteContent } from "@/lib/types";
 
 interface FooterProps {
-  data: SiteContent["footer"]
+  data: SiteContent["footer"];
 }
 
 export default function Footer({ data }: FooterProps) {
   return (
     <footer className="border-t border-white/5 py-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className={`grid gap-12 ${data.quickLinks.length > 0 ? "md:grid-cols-4" : "md:grid-cols-3"}`}>
+        <div
+          className={`grid gap-12 ${data.quickLinks.length > 0 ? "md:grid-cols-4" : "md:grid-cols-3"}`}
+        >
           {/* Brand */}
           <div>
             <div className="flex items-center gap-2 mb-4">
@@ -65,7 +74,7 @@ export default function Footer({ data }: FooterProps) {
               </li>
               <li>
                 <a
-                  href={`tel:${data.contact.phone.replace(/\D/g, '')}`}
+                  href={`tel:${data.contact.phone.replace(/\D/g, "")}`}
                   className="flex items-center gap-3 text-sm text-white/50 hover:text-gold transition-colors"
                 >
                   <Phone size={16} className="text-gold shrink-0" />
@@ -118,11 +127,9 @@ export default function Footer({ data }: FooterProps) {
 
         {/* Copyright */}
         <div className="mt-12 pt-8 border-t border-white/5 text-center">
-          <p className="text-xs text-white/30">
-            {data.copyright}
-          </p>
+          <p className="text-xs text-white/30">{data.copyright}</p>
         </div>
       </div>
     </footer>
-  )
+  );
 }

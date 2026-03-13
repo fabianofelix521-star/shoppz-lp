@@ -1,11 +1,11 @@
-"use client"
+"use client";
 
-import { motion } from "framer-motion"
-import { Star, Quote } from "lucide-react"
-import { SiteContent } from "@/lib/types"
+import { motion } from "framer-motion";
+import { Star, Quote } from "lucide-react";
+import { SiteContent } from "@/lib/types";
 
 interface TestimonialsProps {
-  data: SiteContent["testimonials"]
+  data: SiteContent["testimonials"];
 }
 
 export default function Testimonials({ data }: TestimonialsProps) {
@@ -58,11 +58,7 @@ export default function Testimonials({ data }: TestimonialsProps) {
               {/* Stars */}
               <div className="flex gap-1 mb-6">
                 {Array.from({ length: t.stars }).map((_, j) => (
-                  <Star
-                    key={j}
-                    size={16}
-                    className="text-gold fill-gold"
-                  />
+                  <Star key={j} size={16} className="text-gold fill-gold" />
                 ))}
               </div>
 
@@ -92,5 +88,5 @@ export default function Testimonials({ data }: TestimonialsProps) {
         </div>
       </div>
     </section>
-  )
+  );
 }

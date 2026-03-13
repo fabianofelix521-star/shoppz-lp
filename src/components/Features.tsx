@@ -1,11 +1,11 @@
-"use client"
+"use client";
 
-import { motion } from "framer-motion"
-import { getIcon } from "@/lib/icons"
-import { SiteContent } from "@/lib/types"
+import { motion } from "framer-motion";
+import { getIcon } from "@/lib/icons";
+import { SiteContent } from "@/lib/types";
 
 interface FeaturesProps {
-  data: SiteContent["features"]
+  data: SiteContent["features"];
 }
 
 export default function Features({ data }: FeaturesProps) {
@@ -44,7 +44,7 @@ export default function Features({ data }: FeaturesProps) {
         {/* Grid */}
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {data.items.map((f, i) => {
-            const Icon = getIcon(f.icon)
+            const Icon = getIcon(f.icon);
             return (
               <motion.div
                 key={f.title}
@@ -58,12 +58,14 @@ export default function Features({ data }: FeaturesProps) {
                   <Icon size={28} className="text-gold" />
                 </div>
                 <h3 className="text-xl font-bold mb-3">{f.title}</h3>
-                <p className="text-white/50 text-sm leading-relaxed">{f.description}</p>
+                <p className="text-white/50 text-sm leading-relaxed">
+                  {f.description}
+                </p>
               </motion.div>
-            )
+            );
           })}
         </div>
       </div>
     </section>
-  )
+  );
 }

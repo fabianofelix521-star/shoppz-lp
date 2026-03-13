@@ -1,11 +1,11 @@
-"use client"
+"use client";
 
-import { motion } from "framer-motion"
-import { MessageCircle } from "lucide-react"
-import { SiteContent } from "@/lib/types"
+import { motion } from "framer-motion";
+import { MessageCircle } from "lucide-react";
+import { SiteContent } from "@/lib/types";
 
 interface CTAFinalProps {
-  data: SiteContent["ctaFinal"]
+  data: SiteContent["ctaFinal"];
 }
 
 export default function CTAFinal({ data }: CTAFinalProps) {
@@ -41,5 +41,5 @@ export default function CTAFinal({ data }: CTAFinalProps) {
         </motion.div>
       </div>
     </section>
-  )
+  );
 }

@@ -1,11 +1,11 @@
-"use client"
+"use client";
 
-import { motion } from "framer-motion"
-import { getIcon } from "@/lib/icons"
-import { SiteContent } from "@/lib/types"
+import { motion } from "framer-motion";
+import { getIcon } from "@/lib/icons";
+import { SiteContent } from "@/lib/types";
 
 interface IntegrationsProps {
-  data: SiteContent["integrations"]
+  data: SiteContent["integrations"];
 }
 
 export default function Integrations({ data }: IntegrationsProps) {
@@ -44,7 +44,7 @@ export default function Integrations({ data }: IntegrationsProps) {
         {/* Integration cards */}
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-16">
           {data.items.map((item, i) => {
-            const Icon = getIcon(item.icon)
+            const Icon = getIcon(item.icon);
             return (
               <motion.div
                 key={item.name}
@@ -60,7 +60,7 @@ export default function Integrations({ data }: IntegrationsProps) {
                 <p className="font-semibold text-sm mb-1">{item.name}</p>
                 <p className="text-[11px] text-white/40">{item.description}</p>
               </motion.div>
-            )
+            );
           })}
         </div>
 
@@ -72,7 +72,7 @@ export default function Integrations({ data }: IntegrationsProps) {
           className="flex flex-wrap justify-center gap-4"
         >
           {data.compliance.map((c) => {
-            const Icon = getIcon(c.icon)
+            const Icon = getIcon(c.icon);
             return (
               <div
                 key={c.label}
@@ -81,10 +81,10 @@ export default function Integrations({ data }: IntegrationsProps) {
                 <Icon size={14} className="text-gold" />
                 {c.label}
               </div>
-            )
+            );
           })}
         </motion.div>
       </div>
     </section>
-  )
+  );
 }
